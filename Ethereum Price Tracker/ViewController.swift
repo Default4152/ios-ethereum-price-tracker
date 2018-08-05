@@ -9,15 +9,22 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    
+
+
     @IBOutlet var jpyLabel: UILabel!
     @IBOutlet var eurLabel: UILabel!
     @IBOutlet var usdLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         getPrice()
+    }
+
+    func setCurrencyForLabel(currencyCode: String, currentPrice: Double) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        return formatter.string(from: NSNumber(value: currentPrice))
     }
 
     func getPrice() {
@@ -28,13 +35,9 @@ class ViewController: UIViewController {
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Double]
                     guard let jsonData = json else { return }
                     DispatchQueue.main.async {
-                        guard let ethToUSD = jsonData["USD"] else { return }
-                        guard let ethToEUR = jsonData["EUR"] else { return }
-                        guard let ethToJPY = jsonData["JPY"] else { return }
-                        
-                        self.usdLabel.text = "$\(ethToUSD)"
-                        self.eurLabel.text = "€\(ethToEUR)"
-                        self.jpyLabel.text = "¥\(ethToJPY)"
+                        if let ethToUSD = jsonData["USD"] { self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "USD", currentPrice: ethToUSD) }
+                        if let ethToEUR = jsonData["EUR"] { self.eurLabel.text = self.setCurrencyForLabel(currencyCode: "EUR", currentPrice: ethToEUR) }
+                        if let ethToJPY = jsonData["JPY"] { self.jpyLabel.text = self.setCurrencyForLabel(currencyCode: "JPY", currentPrice: ethToJPY) }
                     }
                 } catch {
                     NSLog("\(error)")
@@ -43,6 +46,10 @@ class ViewController: UIViewController {
                 NSLog("\(String(describing: error))")
             }
         }.resume()
+    }
+
+    @IBAction func refreshPrices(_ sender: Any) {
+        getPrice()
     }
 
 }

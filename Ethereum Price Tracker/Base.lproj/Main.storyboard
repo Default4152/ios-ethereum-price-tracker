@@ -60,7 +60,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Ethereum Price Tracker" id="Cm2-lm-TJu">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="syS-vk-8Px"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="syS-vk-8Px">
+                            <connections>
+                                <action selector="refreshPrices:" destination="BYZ-38-t0r" id="RwJ-5E-D4d"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="eurLabel" destination="aRE-Pq-xLT" id="kfC-K2-Dzr"/>
