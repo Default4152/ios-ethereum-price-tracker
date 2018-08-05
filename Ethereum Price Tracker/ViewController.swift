@@ -9,15 +9,33 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-
     @IBOutlet var jpyLabel: UILabel!
     @IBOutlet var eurLabel: UILabel!
     @IBOutlet var usdLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        getPreviousPrices()
         getPrice()
+    }
+    
+    func getPreviousPrices() {
+        let userDefaults = UserDefaults.standard
+        
+        let usdPrice = userDefaults.double(forKey: "USD")
+        let eurPrice = userDefaults.double(forKey: "EUR")
+        let jpyPrice = userDefaults.double(forKey: "JPY")
+        
+        if usdPrice != 0.0 {
+            self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "USD", currentPrice: usdPrice)
+        }
+        if eurPrice != 0.0 {
+            self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "EUR", currentPrice: eurPrice)
+        }
+        if jpyPrice != 0.0 {
+            self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "JPY", currentPrice: jpyPrice)
+        }
     }
 
     func setCurrencyForLabel(currencyCode: String, currentPrice: Double) -> String? {
@@ -32,12 +50,26 @@ class ViewController: UIViewController {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 do {
+                    let userDefaults = UserDefaults.standard
+                    
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Double]
+                    
                     guard let jsonData = json else { return }
+                    
                     DispatchQueue.main.async {
-                        if let ethToUSD = jsonData["USD"] { self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "USD", currentPrice: ethToUSD) }
-                        if let ethToEUR = jsonData["EUR"] { self.eurLabel.text = self.setCurrencyForLabel(currencyCode: "EUR", currentPrice: ethToEUR) }
-                        if let ethToJPY = jsonData["JPY"] { self.jpyLabel.text = self.setCurrencyForLabel(currencyCode: "JPY", currentPrice: ethToJPY) }
+                        if let ethToUSD = jsonData["USD"] {
+                            self.usdLabel.text = self.setCurrencyForLabel(currencyCode: "USD", currentPrice: ethToUSD)
+                            userDefaults.set(ethToUSD, forKey: "USD")
+                        }
+                        if let ethToEUR = jsonData["EUR"] {
+                            self.eurLabel.text = self.setCurrencyForLabel(currencyCode: "EUR", currentPrice: ethToEUR)
+                            userDefaults.set(ethToEUR, forKey: "EUR")
+                        }
+                        if let ethToJPY = jsonData["JPY"] {
+                            self.jpyLabel.text = self.setCurrencyForLabel(currencyCode: "JPY", currentPrice: ethToJPY)
+                            userDefaults.set(ethToJPY, forKey: "JPY")
+                        }
+                        userDefaults.synchronize()
                     }
                 } catch {
                     NSLog("\(error)")
