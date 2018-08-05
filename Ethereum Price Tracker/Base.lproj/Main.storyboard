@@ -35,7 +35,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="💴45,357.18" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gf-IQ-3bX">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="¥45,357.18" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gf-IQ-3bX">
                                 <rect key="frame" x="10" y="523" width="355" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
@@ -62,6 +62,11 @@
                     <navigationItem key="navigationItem" title="Ethereum Price Tracker" id="Cm2-lm-TJu">
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="syS-vk-8Px"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="eurLabel" destination="aRE-Pq-xLT" id="kfC-K2-Dzr"/>
+                        <outlet property="jpyLabel" destination="5gf-IQ-3bX" id="wkL-Lt-nYE"/>
+                        <outlet property="usdLabel" destination="rUB-Md-TPb" id="pBb-Ko-WuC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
